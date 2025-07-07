@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stephan Smith Solutions LLC - CDN</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <link rel="icon" href="https://cdn.stephansmith.solutions/assets/favicons/icon.avif" type="image/avif">
+    
+    <style>
+        :root {
+            --primary-purple: #401d50;
+            --secondary-purple: #6b2c8c;
+            --light-purple: #f0e6f5;
+        }
+        
+        body {
+            background-color: black;
+            color: white;
+        }
+
+        #loginScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        #loginForm {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        #loginForm h2 {
+            color: var(--primary-purple);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        #loginForm .form-control {
+            background-color: white;
+            color: #212529;
+            border: 1px solid #dee2e6;
+        }
+
+        #loginForm .form-control:focus {
+            background-color: white;
+            color: #212529;
+            border-color: var(--secondary-purple);
+            box-shadow: 0 0 0 0.25rem rgba(107, 44, 140, 0.25);
+        }
+
+        #loginForm .btn-primary {
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        #mainContent {
+            display: none;
+        }
+
+        .navbar {
+            background-color: #1a1a1a !important;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .card {
+            background-color: white;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .file-card {
+            transition: transform 0.2s;
+        }
+        
+        .file-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .file-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-purple);
+        }
+
+        .file-preview {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 0.375rem;
+            margin-bottom: 1rem;
+        }
+
+        .file-url {
+            word-break: break-all;
+            font-size: 0.875rem;
+        }
+
+        .search-container {
+            position: sticky;
+            top: 0;
+            background: black;
+            padding: 1.5rem 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .input-group {
+            max-width: 800px;
+        }
+
+        .input-group-text {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.75rem 1rem;
+            font-size: 1.1rem;
+        }
+
+        .form-control {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.75rem 1rem;
+            font-size: 1.1rem;
+        }
+
+        .form-control:focus {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .form-control::placeholder {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Custom dropdown styling */
+        #folderSelect {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.75rem 2.5rem 0.75rem 1rem;
+            font-size: 1.1rem;
+            cursor: pointer;
+            min-width: 200px;
+            border-radius: 0.375rem;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba(255,255,255,0.7)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 16px 12px;
+        }
+
+        #folderSelect:focus {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.1);
+            outline: none;
+        }
+
+        #folderSelect option {
+            background-color: #000;
+            color: white;
+            padding: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: #333333;
+            border-color: #333333;
+        }
+
+        .btn-primary:hover {
+            background-color: #555555;
+            border-color: #555555;
+        }
+
+        .spinner-border {
+            color: var(--secondary-purple) !important;
+        }
+
+        .alert-info {
+            background-color: black;
+            border-color: #333333;
+            color: white;
+        }
+
+        .alert-danger {
+            background-color: #ffebee;
+            border-color: #f44336;
+            color: #d32f2f;
+        }
+
+        .modal-content {
+            background-color: white;
+            color: #212529;
+        }
+
+        .modal-header {
+            border-bottom-color: #dee2e6;
+        }
+
+        .modal-footer {
+            border-top-color: #dee2e6;
+        }
+
+        .modal-image {
+            max-width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+        }
+
+        .modal-url-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: #f8f9fa;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            margin-top: 1rem;
+        }
+
+        .modal-url {
+            word-break: break-all;
+            font-size: 1.1rem;
+            flex: 1;
+        }
+
+        .copy-btn {
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .copy-btn.copied {
+            background-color: #198754;
+            border-color: #198754;
+        }
+
+        .btn-close {
+            filter: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen">
+        <div id="loginForm">
+            <div class="text-center mb-3">
+                <img src="https://cdn.stephansmith.solutions/assets/main-logo.png" alt="Stephan Smith Solutions Logo" style="width: 140px; height: 140px; object-fit: contain;">
+            </div>
+            <h2>Stephan Smith Solutions CDN</h2>
+            <p class="text-muted text-center mb-4">What's the magic word?</p>
+            <div class="mb-3">
+                <input type="password" id="passwordInput" class="form-control" placeholder="Enter the magic word...">
+                <div id="passwordError" class="text-danger mt-2" style="display: none;">That's not the right magic word. Try again!</div>
+            </div>
+            <button onclick="checkPassword()" class="btn btn-primary">Access CDN</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand fw-bold" href="#">
+                    Stephan Smith Solutions Branding CDN
+                </a>
+                <div class="d-flex ms-auto gap-2">
+                    <button onclick="window.open('https://github.com/Stephan-Smith-LLC/cdn', '_blank')" class="btn btn-outline-light" title="View on GitHub" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Use this button to access the repo and update files.">
+                        <i class="bi bi-github me-1"></i> GitHub
+                    </button>
+                    <button onclick="logout()" class="btn btn-outline-light">
+                        <i class="bi bi-box-arrow-right me-1"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container py-4">
+            <div class="search-container mb-4">
+                <div class="d-flex gap-3">
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search files...">
+                    </div>
+                    <select id="folderSelect" class="form-select" style="width: auto;">
+                        <option value="">All Folders</option>
+                    </select>
+                </div>
+                <div class="text-center mt-3 text-white-50">
+                    <small><i class="bi bi-info-circle me-1"></i> Click on an image to see its size, dimensions and public URL</small>
+                </div>
+            </div>
+
+            <div class="row" id="file-list">
+                <div class="col-12 text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Image Preview Modal -->
+        <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="imageModalLabel">Image Preview</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img id="modalImage" class="modal-image mb-3" src="" alt="">
+                        <div class="modal-url-container">
+                            <div class="modal-url" id="modalUrl"></div>
+                            <button class="btn btn-sm btn-primary copy-btn" onclick="copyUrlToClipboard()">
+                                <i class="bi bi-clipboard me-1"></i> Copy
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a id="modalDownloadBtn" href="" class="btn btn-lg btn-primary" target="_blank">
+                            <i class="bi bi-download me-1"></i> Open in a Tab
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Password protection
+        const CORRECT_PASSWORD = 'launch';
+        
+        function logout() {
+            localStorage.removeItem('cdnAuthenticated');
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('passwordInput').value = '';
+        }
+        
+        // Check if user is already authenticated
+        window.onload = function() {
+            const isAuthenticated = localStorage.getItem('cdnAuthenticated');
+            if (isAuthenticated === 'true') {
+                showMainContent();
+            }
+        }
+
+        function checkPassword() {
+            const password = document.getElementById('passwordInput').value;
+            const errorElement = document.getElementById('passwordError');
+            
+            if (password === CORRECT_PASSWORD) {
+                localStorage.setItem('cdnAuthenticated', 'true');
+                showMainContent();
+            } else {
+                errorElement.style.display = 'block';
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('passwordInput').focus();
+            }
+        }
+
+        function showMainContent() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        }
+
+        // Add enter key support for password input
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        // Clear error message when user starts typing
+        document.getElementById('passwordInput').addEventListener('input', function() {
+            document.getElementById('passwordError').style.display = 'none';
+        });
+
+        const username = 'Stephan-Smith-LLC';
+        const repo = 'cdn';
+        const CDN_BASE_URL = 'https://cdn.stephansmith.solutions/';
+        let allFiles = [];
+        let folderStructure = new Set();
+
+        async function fetchFolderContents(path = '') {
+            try {
+                const response = await fetch(`https://api.github.com/repos/${username}/${repo}/contents/${path}`);
+                const contents = await response.json();
+                
+                // If it's not an array, it's a single file
+                if (!Array.isArray(contents)) {
+                    return shouldExcludeFile(contents.name) ? [] : [contents];
+                }
+
+                // Process each item in the folder
+                const results = await Promise.all(
+                    contents.map(async (item) => {
+                        if (item.type === 'dir') {
+                            // Recursively fetch contents of subfolder
+                            return fetchFolderContents(item.path);
+                        } else {
+                            // Only include files that are not in the exclude list
+                            return shouldExcludeFile(item.name) ? null : item;
+                        }
+                    })
+                );
+
+                // Flatten the results array and remove null values
+                return results.flat().filter(item => item !== null);
+            } catch (error) {
+                console.error('Error fetching folder contents:', error);
+                return [];
+            }
+        }
+
+        function isImageFile(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            return ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(ext);
+        }
+
+        function shouldExcludeFile(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            const excludeExtensions = ['html', 'md', 'cname'];
+            return excludeExtensions.includes(ext) || filename.toLowerCase() === '.ds_store';
+        }
+
+        function getFileIcon(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'];
+            const docExts = ['pdf', 'doc', 'docx'];
+            const codeExts = ['js', 'css', 'json', 'xml'];
+            
+            if (imageExts.includes(ext)) return 'bi-image';
+            if (docExts.includes(ext)) return 'bi-file-earmark-text';
+            if (codeExts.includes(ext)) return 'bi-file-code';
+            return 'bi-file';
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function createFileCard(file) {
+            const cdnUrl = `${CDN_BASE_URL}${file.path}`;
+            const isImage = isImageFile(file.name);
+            const fileIcon = getFileIcon(file.name);
+            const fileSize = formatFileSize(file.size);
+            const folderPath = file.path.split('/').slice(0, -1).join('/');
+
+            return `
+                <div class="col-md-4 col-lg-3 mb-4 file-card">
+                    <div class="card h-100">
+                        ${isImage ? 
+                            `<img src="${cdnUrl}" class="file-preview" alt="${file.name}" 
+                                onclick="openImageModal('${cdnUrl}', '${file.name}')" 
+                                style="cursor: pointer;">` :
+                            `<div class="text-center p-4">
+                                <i class="bi ${fileIcon} file-icon text-primary"></i>
+                            </div>`
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title text-truncate" title="${file.name}">${file.name}</h5>
+                            <p class="card-text text-muted small mb-1">${fileSize}</p>
+                            <p class="card-text text-muted small mb-2">${folderPath || 'Root'}</p>
+                            <a href="${cdnUrl}" class="btn btn-primary btn-lg w-100" target="_blank">
+                                <i class="bi bi-download me-1"></i> Open
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function updateFolderDropdown() {
+            const folderSelect = document.getElementById('folderSelect');
+            folderSelect.innerHTML = '<option value="">All Folders</option>';
+            
+            // Sort folders alphabetically
+            const sortedFolders = Array.from(folderStructure).sort();
+            
+            sortedFolders.forEach(folder => {
+                const option = document.createElement('option');
+                option.value = folder;
+                option.textContent = folder;
+                folderSelect.appendChild(option);
+            });
+        }
+
+        function filterFiles(files, searchTerm = '', selectedFolder = '') {
+            return files.filter(file => {
+                const matchesSearch = file.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                    file.path.toLowerCase().includes(searchTerm.toLowerCase());
+                
+                const folderPath = file.path.split('/').slice(0, -1).join('/');
+                const matchesFolder = !selectedFolder || folderPath === selectedFolder;
+                
+                return matchesSearch && matchesFolder;
+            });
+        }
+
+        function renderFiles(files, searchTerm = '') {
+            const fileList = document.getElementById('file-list');
+            const selectedFolder = document.getElementById('folderSelect').value;
+            const filteredFiles = filterFiles(files, searchTerm, selectedFolder);
+            
+            if (filteredFiles.length === 0) {
+                fileList.innerHTML = `
+                    <div class="col-12 text-center">
+                        <div class="alert alert-info">
+                            No files found matching your search.
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            fileList.innerHTML = filteredFiles.map(file => createFileCard(file)).join('');
+        }
+
+        // Initialize search functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', (e) => {
+            renderFiles(allFiles, e.target.value);
+        });
+
+        // Initialize folder select
+        document.getElementById('folderSelect').addEventListener('change', () => {
+            renderFiles(allFiles, searchInput.value);
+        });
+
+        // Initialize modal
+        let imageModal;
+        document.addEventListener('DOMContentLoaded', function() {
+            imageModal = new bootstrap.Modal(document.getElementById('imageModal'));
+        });
+
+        function openImageModal(url, filename) {
+            const modalImage = document.getElementById('modalImage');
+            const modalUrl = document.getElementById('modalUrl');
+            const modalDownloadBtn = document.getElementById('modalDownloadBtn');
+            const modalTitle = document.getElementById('imageModalLabel');
+
+            modalImage.src = url;
+            modalImage.alt = filename;
+            modalUrl.textContent = url;
+            modalDownloadBtn.href = url;
+            modalTitle.textContent = filename;
+
+            // Get image dimensions when loaded
+            modalImage.onload = function() {
+                const dimensions = document.createElement('div');
+                dimensions.className = 'text-muted small mt-2';
+                dimensions.textContent = `${this.naturalWidth} × ${this.naturalHeight} pixels`;
+                
+                // Find the existing dimensions element or create a new one
+                const existingDimensions = document.querySelector('.image-dimensions');
+                if (existingDimensions) {
+                    existingDimensions.remove();
+                }
+                dimensions.className = 'image-dimensions text-muted small mt-2';
+                this.parentNode.appendChild(dimensions);
+            };
+
+            imageModal.show();
+        }
+
+        function copyUrlToClipboard() {
+            const url = document.getElementById('modalUrl').textContent;
+            const copyBtn = document.querySelector('.copy-btn');
+            
+            navigator.clipboard.writeText(url).then(() => {
+                // Change button text temporarily
+                const originalContent = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<i class="bi bi-check-lg me-1"></i> Copied!';
+                copyBtn.classList.add('copied');
+                
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalContent;
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy URL: ', err);
+                alert('Failed to copy URL to clipboard');
+            });
+        }
+
+        // Fetch and render all files
+        fetchFolderContents()
+            .then(files => {
+                allFiles = files;
+                // Build folder structure
+                files.forEach(file => {
+                    const folderPath = file.path.split('/').slice(0, -1).join('/');
+                    if (folderPath) {
+                        folderStructure.add(folderPath);
+                    }
+                });
+                updateFolderDropdown();
+                renderFiles(files);
+            })
+            .catch(error => {
+                console.error('Error fetching files:', error);
+                document.getElementById('file-list').innerHTML = `
+                    <div class="col-12 text-center">
+                        <div class="alert alert-danger">
+                            Error loading files. Please try again later.
+                        </div>
+                    </div>
+                `;
+            });
+
+        // Enable Bootstrap tooltips
+        document.addEventListener('DOMContentLoaded', function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+                new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+</body>
+</html>
